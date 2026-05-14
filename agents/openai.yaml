@@ -1,0 +1,7 @@
+interface:
+  display_name: "降 AI 论文改写"
+  short_description: "按段落类型降低中文论文模板化和AI生成痕迹"
+  default_prompt: "Use $reduce-ai-style-writing to rewrite the following Chinese academic paragraph with lower AI-like phrasing while preserving terms, facts, citations, and claim boundaries."
+
+policy:
+  allow_implicit_invocation: true
