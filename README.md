@@ -1,8 +1,10 @@
 # reduce-ai-style-writing
 
-`reduce-ai-style-writing` 是一个面向中文论文的skill，用于把论文段落中“过于规整、过于精致、过于像 AI 生成”的表达改成更普通的正式论文文本。
+`reduce-ai-style-writing` 是一个面向中文论文的通用 AI 写作规则包 / skill，用于把论文段落中“过于规整、过于精致、过于像 AI 生成”的表达改成更普通的正式论文文本。目前针对降低 AI 率可以达到一个非常优秀的效果，跟市面的付费工具效果接近。希望大家在使用过程中积极反馈，我这边会不断优化。
 
 它的目标不是承诺某个检测器分数，而是在保留术语、事实、引用、数据边界和结论边界的前提下，降低明显的模板化句式和 AI 写作痕迹。
+
+本仓库不只适用于 Codex。只要你的 AI 编程助手、编辑器或命令行代理可以读取 Markdown 规则文件，就可以使用本仓库，例如 Codex、Claude Code、Cursor、Cline、Roo Code、Gemini CLI 等。
 
 ## 目录
 
@@ -21,23 +23,39 @@ reduce-ai-style-writing/
     └── ai_style_scan.ps1
 ```
 
-## 安装
+## 安装与接入
 
-把本仓库放到 Codex 的 skills 目录下即可，例如 Windows PowerShell：
+### Codex
 
 ```powershell
 git clone https://github.com/Norman-bury/reduce-ai-style-writing "$env:USERPROFILE\.codex\skills\reduce-ai-style-writing"
 ```
 
-如果已经下载到本地，也可以直接复制整个 `reduce-ai-style-writing/` 目录到：
+如果已经下载到本地，也可以直接复制整个 `reduce-ai-style-writing/` 目录到 Codex skills 目录：
 
 ```text
 C:\Users\<用户名>\.codex\skills\reduce-ai-style-writing
 ```
 
+### Claude Code、Cursor、Cline、Roo Code 等
+
+这些工具未必使用 Codex 的 `skills/` 目录结构。通用做法是：
+
+1. 克隆或下载本仓库。
+2. 在你的工具规则文件中引用本仓库的 `SKILL.md`。
+3. 改写具体段落时，让工具按 `SKILL.md` 的流程执行，并在需要时读取 `references/` 中对应规则。
+
+可以直接把下面这段放进 `CLAUDE.md`、`AGENTS.md`、`.cursorrules` 或其他项目规则文件中：
+
+```text
+When rewriting Chinese academic paragraphs to reduce AI-like phrasing, use the rules in reduce-ai-style-writing/SKILL.md. Preserve terminology, facts, citations, numbers, data boundaries, and claim boundaries. For paragraph-specific details, read the relevant files under reduce-ai-style-writing/references/.
+```
+
+如果你的工具支持直接附加上下文，也可以把 `SKILL.md` 和相关 `references/*.md` 文件作为上下文文件提供给模型。
+
 ## 使用方式
 
-安装后，在 Codex 中直接点名使用该 skill：
+在支持 skill 的工具中，可以直接点名使用：
 
 ```text
 用 reduce-ai-style-writing 改写下面这段，降低 AI 率。
@@ -50,6 +68,12 @@ C:\Users\<用户名>\.codex\skills\reduce-ai-style-writing
 
 ```text
 用 reduce-ai-style-writing 改写下面这段，只输出改写后的正文，不要解释。
+```
+
+如果工具不支持 skill 名称，可以改成：
+
+```text
+请按照 reduce-ai-style-writing/SKILL.md 的规则改写下面这段中文论文文本，降低 AI 写作痕迹，同时保留术语、事实、引用、数值和结论边界。
 ```
 
 默认输出包含两部分：
